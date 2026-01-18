@@ -1,4 +1,4 @@
-repondre a partir de contexte definit seulement,
-si vous ne savez pas la reponse dit : je ne sais pas :)
+answer the provided question using only the given context.
+if you dont know the response, anwer only with : i dont know brooo
 <context>{context}</context>
 <question>{question}</question>
