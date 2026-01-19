@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -35,10 +36,10 @@ public class RagControler {
         this.chatClient = builder.build();
     }
 
-    @GetMapping("/ask")
+    @GetMapping(value = "/ask", produces = MediaType.TEXT_PLAIN_VALUE)
     public String ask(String question){
         List<Document> documents = vectorStore.similaritySearch(question);
-        List<ContentFormatter> context = documents.stream().map(Document::getContentFormatter).toList();
+        List<String> context = documents.stream().map(Document::getText).toList();
         PromptTemplate promptTemplate = new PromptTemplate(promptResource);
         Prompt prompt = promptTemplate.create(Map.of("context", context, "question", question));
         return chatClient.prompt(prompt).call().content();
